@@ -13,3 +13,17 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
+
+mix.styles([
+    'node_modules/jquery-treegrid/styles.css',
+    'node_modules/jquery-treegrid/css/jquery.treegrid.css'
+], 'public/css/all.css');
+
+
+mix.js([
+    'node_modules/jquery/dist/jquery.js',
+    'node_modules/jquery-treegrid/js/jquery.treegrid.js',
+    'node_modules/jquery-treegrid/js/jquery.cookie.js',
+    'node_modules/jquery-treegrid/js/jquery.treegrid.bootstrap2.js',
+    'node_modules/jquery-treegrid/js/jquery.treegrid.bootstrap3.js'
+], 'public/js/all.js');
