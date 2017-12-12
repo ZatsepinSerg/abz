@@ -7,17 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="{{mix('/css/app.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{mix('/css/all.css')}}" />
+    <script type="application/javascript" src="{{mix('/js/app.js')}}"></script>
+    <script type="application/javascript" src="{{mix('/js/all.js')}}"></script>
+
     <title>Document</title>
 </head>
 <body>
 @yield('content')
 
-
-</body>
-<script type="application/javascript" src="{{mix('/js/app.js')}}"></script>
-<script type="application/javascript" src="{{mix('/js/all.js')}}"></script>
-
 <script type="text/javascript">
     $('.tree').treegrid();
 </script>
+
+
+</body>
 </html>

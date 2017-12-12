@@ -26,6 +26,6 @@
                 @endif
             @endforeach
         @endforeach
-        
+
     </table>
 @endsection
