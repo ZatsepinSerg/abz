@@ -16,7 +16,7 @@ $factory->define(App\Worker::class,function(Faker\Generator $faker){
       'patronymic' =>$faker->lastName,
       'position' =>$faker->jobTitle,
       'date_receipt' =>$faker->date($format = 'Y-m-d', $max = 'now'),
-      'salary' =>$faker->numberBetween($min = 1000, $max = 9000),
+      'salary' =>$faker->numberBetween($min = 100, $max = 90000),
       'photo' =>$faker->imageUrl($width = 640, $height = 480, 'business', true, 'Faker'),
     ];
 });
