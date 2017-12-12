@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('greed_workers');
-});
+Route::get('/', 'WorkerController@index');
+Route::get('/worker', 'WorkerController@workers_list');
+Route::get('/search_info', 'WorkerController@searchInfoWorkers');
+Route::get('/sort_info', 'WorkerController@sortInfoWorkers');
