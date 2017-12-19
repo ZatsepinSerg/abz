@@ -16,12 +16,12 @@ class ReateWorkersTable extends Migration
         Schema::create('workers', function (Blueprint $table) {
             $table->increments('id')->unique();
             $table->integer('parent_id');
-            $table->string('surname');
-            $table->string('name');
-            $table->string('patronymic');
-            $table->string('position');
-            $table->date('date_receipt');
-            $table->integer('salary');
+            $table->string('surname')->index('surname');
+            $table->string('name')->index('name');
+            $table->string('patronymic')->index('patronymic');
+            $table->string('position')->index('position');
+            $table->date('date_receipt')->index('date_receipt');
+            $table->integer('salary')->index('salary');
             $table->string('photo');
             $table->timestamps();
         });
