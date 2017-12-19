@@ -259,3 +259,8 @@ footer {
 tbody tr:hover {
     background: #2a88bd;
 }
+
+#image_preview{
+    width:  100%;
+    min-height: 100px
+}

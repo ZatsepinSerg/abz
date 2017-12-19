@@ -10333,7 +10333,8 @@ __webpack_require__(1);
 __webpack_require__(44);
 __webpack_require__(45);
 __webpack_require__(46);
-module.exports = __webpack_require__(47);
+__webpack_require__(47);
+module.exports = __webpack_require__(48);
 
 
 /***/ }),
@@ -11096,6 +11097,17 @@ $.extend($.fn.treegrid.defaults, {
     expanderCollapsedClass: 'glyphicon glyphicon-chevron-right'
 });
 
+
+/***/ }),
+
+/***/ 48:
+/***/ (function(module, exports) {
+
+
+
+function search_info() {
+    alert();
+}
 
 /***/ })
 

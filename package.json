@@ -19,6 +19,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "ember-moment": "^7.5.0",
     "jquery-treegrid": "^0.3.0"
   }
 }
