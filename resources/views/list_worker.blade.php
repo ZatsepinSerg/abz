@@ -13,6 +13,7 @@
                 data:{ string:searchStr,select:selectStr
                 },
                 success: function(response) {
+                    $('.glyphicon.sort').remove();
                    refresh_table(response);
                 },
                 error: function(){
@@ -21,6 +22,9 @@
             });
             return false;
         }
+
+
+
         function sort_info(id) {
 
             var sequence = $('#'+ id).val()
@@ -61,7 +65,7 @@
             if (response.length > 0) {
                 for (info in response) {
 
-                    table += '<tr> <td ><img src="' + response[info].photo + '" alt="' + response[info].name + '" ' +
+                    table += '<tr id="'+ response[info].id +'"> <td ><img src="' + response[info].photo + '" alt="' + response[info].name + '" ' +
                         'style="width: 100px;height: 100px;" class="img-rounded" ></td>' +
                         ' <td >' + response[info].patronymic + '</td><td >' + response[info].surname + '</td>' +
                         '<td >' + response[info].name + '</td><td>' + response[info].position + '</td> <td >'
@@ -73,7 +77,13 @@
             $('#list').html( table );
         }
 
+        $(document).ready(function() {
+            $('#list').on("click",'tr',function () {
+                alert(this.id)
+            var  id = this.id;
 
+            location.href = "/worker/"+ id +"/edit";})
+            });
     </script>
     <div class="col-lg-12">
     <div class="col-lg-3"></div>
@@ -82,7 +92,7 @@
             {{csrf_field()}}
             <div class="form-group">
                 <label for="exampleInputName2">Text</label>
-                <input type="text" class="form-control" id="exampleInputName2"  name="searchString" placeholder="Jane Doe" >
+                <input type="text" class="form-control" id="exampleInputName2"  name="searchString" placeholder="Jane Doe">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail2">Column select</label>
@@ -103,7 +113,7 @@
     </div>
     <br>
     <br>
-
+    <div class="content">
     <table class="table" >
         <thead>
         <tr>
@@ -118,7 +128,7 @@
         </thead>
         <tbody id="list">
     @foreach( $workers AS $worker )
-            <tr>
+            <tr id="{{$worker->id}}">
                 <td ><img src="{{$worker->photo}}" alt="{{$worker->name}}" style="width: 100px;height: 100px;" class="img-rounded" ></td>
                 <td >{{$worker->patronymic}}</td>
                 <td >{{$worker->surname}}</td>
@@ -130,5 +140,27 @@
     @endforeach
         </tbody>
      </table>
+    {{$workers->links()}}
+    </div>
+    <script>
+        $(document).on('click','.pagination a', function(e){
+           e.preventDefault();
 
+           var page = $(this).attr('href').split('page=')[1];
+
+            getWorkes(page);
+        });
+
+       function  getWorkes(page){
+               $.ajax({
+                   url: '/ajax/workers?page=' + page
+               }).done(function (data){
+                   console.log(data)
+                   $('.content').html(data)
+
+                   location.hash = page;
+               })
+        }
+
+    </script>
 @endsection
