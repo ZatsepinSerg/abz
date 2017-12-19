@@ -11,7 +11,20 @@
 |
 */
 
-Route::get('/', 'WorkerController@index');
-Route::get('/worker', 'WorkerController@workers_list');
-Route::get('/search_info', 'WorkerController@searchInfoWorkers');
-Route::get('/sort_info', 'WorkerController@sortInfoWorkers');
+Route::get('/', 'WorkerController@index')->name('home');
+
+Route::group([ 'middleware' => 'auth'], function(){
+    Route::GET('/workers', 'WorkerController@workers_list');
+    Route::GET('/search_info', 'WorkerController@searchInfoWorkers');
+    Route::GET('/sort_info', 'WorkerController@sortInfoWorkers');
+    Route::PUT('/worker/{id}', 'WorkerController@update');
+    Route::GET('/worker/{id}/edit', 'WorkerController@edit');
+    Route::GET('/worker/create', 'WorkerController@create');
+    Route::POST('/worker', 'WorkerController@store');
+    Route::DELETE('/worker/{id}', 'WorkerController@destroy');
+    Route::GET('/ajax/workers', 'WorkerController@workers_list_ajax');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
