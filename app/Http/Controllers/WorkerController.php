@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Worker;
+use Illuminate\Support\Facades\Storage;
 
 class WorkerController extends Controller
 {
 
     public $objWorker;
+
     public function __construct()
     {
         $this->objWorker = New Worker();
@@ -23,18 +25,22 @@ class WorkerController extends Controller
     {
         $workers = $this->objWorker->allWorkers();
 
-      //dd($workers);
-
         return view('greed_workers',compact('workers'));
     }
 
     public function workers_list()
     {
         $workers = $this->objWorker->allInfoWorkers();
-    //dd($workers);
+
         return view('list_worker',compact('workers'));
     }
 
+    public function workers_list_ajax()
+    {
+        $workers = $this->objWorker->allInfoWorkers();
+
+        return view('ajax.list_worker_ajax',compact('workers'))->render();
+    }
 
     public function searchInfoWorkers(Request $request)
     {
@@ -44,8 +50,6 @@ class WorkerController extends Controller
 
         $workers = $this->objWorker->searchInfoWorkers($request->string,$request->select);
 
-     //  dd($workers);
-
         return $workers;
     }
 
@@ -54,8 +58,6 @@ class WorkerController extends Controller
         $this->validate($request, ['column' => 'required', 'sequence' => 'required']);
 
         $workers = $this->objWorker->sortInfoWorkers($request->column,$request->sequence);
-
-
 
         return $workers;
     }
@@ -69,7 +71,7 @@ class WorkerController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -80,7 +82,45 @@ class WorkerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $answer = FALSE;
+        $time = time();
+
+        $this->validate($request, [
+            'name' => 'required|max:200',
+            'surname' => 'required|max:200',
+            'patronymic' => 'required|max:200',
+            'boss' => 'required|max:200',
+            'position' => 'required|max:200',
+            'date_receipt' => 'date_format:"Y-m-d"|required',
+            'salary' => 'integer|required',
+            'file' =>'mimes:jpeg,bmp,png'
+        ]);
+if(!empty($request->file('file'))) {
+    $photoWay = "images/photo/" . $time . "-" . $request->file('file')->getClientOriginalName();
+    $request->file('file')->move(public_path() . '/images/photo/', $time . "-" . $request->file('file')->getClientOriginalName());
+
+    $this->objWorker->name = $request->name;
+    $this->objWorker->surname = $request->surname;
+    $this->objWorker->patronymic = $request->patronymic;
+    $this->objWorker->parent_id = $request->boss;
+    $this->objWorker->position = $request->position;
+    $this->objWorker->date_receipt = $request->date_receipt;
+    $this->objWorker->salary = $request->salary;
+    $this->objWorker->photo = $photoWay;
+
+    $answer = $this->objWorker->save();
+}
+
+        if($answer){
+            session()->flash('message','Сотрудник успешно добавлен!');
+
+            return redirect()->home();
+        }else{
+            session()->flash('message','Произошла ошибка при добавлении нового сотрудника!');
+
+            return redirect()->back();
+        }
+
     }
 
     /**
@@ -102,7 +142,13 @@ class WorkerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $worker_info = $this->objWorker->InfoWorker($id);
+
+        if($worker_info->parent_id !== 0 ) {
+            $boss_info = $this->objWorker->bossInfo($worker_info->parent_id);
+        }
+
+        return view('edit',compact('worker_info','boss_info'));
     }
 
     /**
@@ -114,7 +160,39 @@ class WorkerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $time = time();
+
+        $this->validate($request, [
+            'id' => 'required|integer',
+            'name' => 'required|max:200',
+            'surname' => 'required|max:200',
+            'patronymic' => 'required|max:200',
+            'boss' => 'required|max:200',
+            'position' => 'required|max:200',
+            'date_receipt' => 'date_format:"Y-m-d"|required',
+            'salary' => 'integer|required',
+            'file' =>'mimes:jpeg,bmp,png'
+        ]);
+
+          if (!empty($request->file('file'))) {
+              $oldImageWay = $this->objWorker->oldPhotoWay($id);
+              Storage::delete($oldImageWay->photo);
+
+              $photoWay = "images/photo/" .$time."-".$request->file('file')->getClientOriginalName();
+              $request->file('file')->move(public_path() . '/images/photo/', $time ."-".$request->file('file')->getClientOriginalName());
+
+              $answer = $this->objWorker->updateWorker($id,$request,$photoWay);
+
+          }else {
+              $answer = $this->objWorker->updateWorker($id,$request);
+          }
+
+              if ($answer) {
+                    session()->flash('message', 'Данные сотрудника успешно обновлены!');
+                } else {
+                    session()->flash('message', 'Ошибка обновления данных сотрудника!');
+                }
+                return redirect('/workers');
     }
 
     /**
@@ -125,6 +203,31 @@ class WorkerController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $subordinateWorkers = $this->objWorker->subordinate($id);
+
+        $newBoss = $this->objWorker->newBoss($id);
+        $newBoss = $newBoss->parent_id;
+
+        if(!empty($newBoss)) {
+            foreach ($subordinateWorkers as $worker) {
+                $this->objWorker->updateBossInfo($worker->id, $newBoss);
+            }
+        }
+
+        $imgWay =  $this->objWorker->oldPhotoWay($id);
+
+        Storage::delete($imgWay->photo);
+
+        $answer = $this->objWorker->deleteWorker($id);
+
+        if ($answer) {
+            session()->flash('message', 'Worker delete!');
+        } else {
+            session()->flash('message', 'Error!');
+        }
+
+        return redirect('/workers');
+
     }
 }
