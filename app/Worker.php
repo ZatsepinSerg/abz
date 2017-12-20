@@ -27,7 +27,7 @@ class Worker extends Model
      public function searchInfoWorkers($string = '',$select_column)
     {
         $res = Worker::select('id', 'photo', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
-            ->where($select_column, 'like', '%'.$string.'%')->get();
+            ->where($select_column, 'like', '%'.$string.'%')->paginate(2);
 
         return $res;
     }
@@ -35,7 +35,7 @@ class Worker extends Model
       public function sortInfoWorkers($select_column,$string = 'DESC')
     {
         $res = Worker::select('id', 'photo', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
-            ->orderBy($select_column, $string)->get();
+            ->orderBy($select_column, $string)->paginate(500);
 
         return $res;
     }

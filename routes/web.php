@@ -23,6 +23,8 @@ Route::group([ 'middleware' => 'auth'], function(){
     Route::POST('/worker', 'WorkerController@store');
     Route::DELETE('/worker/{id}', 'WorkerController@destroy');
     Route::GET('/ajax/workers', 'WorkerController@workers_list_ajax');
+    Route::GET('/ajax/search_info', 'WorkerController@searchAjaxInfoWorkers');
+
 });
 
 Auth::routes();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Worker;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
 class WorkerController extends Controller
@@ -53,15 +54,74 @@ class WorkerController extends Controller
         return $workers;
     }
 
-    public function sortInfoWorkers(Request $request)
+    public function searchAjaxInfoWorkers(Request $request)
     {
-        $this->validate($request, ['column' => 'required', 'sequence' => 'required']);
+        $this->validate($request,
+            ['string' => 'required',
+             'select' => 'required']);
 
-        $workers = $this->objWorker->sortInfoWorkers($request->column,$request->sequence);
+        $workers = $this->objWorker->searchInfoWorkers($request->string,$request->select);
 
-        return $workers;
+        return view('ajax.list_worker_ajax',compact('workers'))->render();
     }
 
+
+    public function sortInfoWorkers(Request $request)
+    {
+
+         $columnCook =  $request->cookie('column');
+         $sequenceCook = $request->cookie('sequence');
+
+
+        if(  $columnCook != $request->column && isset($request->column)) {
+             Cookie::queue('column',$request->column,true,60);
+             $column = $request->column;
+        }else{
+            $column = $columnCook;
+        }
+
+        if( $sequenceCook != $request->sequence && isset($request->sequence)) {
+
+            Cookie::queue('sequence',$request->sequence,true,60);
+            $sequence = $request->sequence;
+        }else{
+            $sequence = $sequenceCook;
+        }
+
+
+
+        $workers = $this->objWorker->sortInfoWorkers( $column,$sequence);
+
+        return view('ajax.list_worker_ajax',compact('workers'))->render();
+    }
+
+    /*public function sortAjaxInfoWorkers(Request $request)
+    {
+        //$this->validate($request, ['column' => 'required', 'sequence' => 'required']);
+
+        $column = $_COOKIE['column'];
+        $sequence = $_COOKIE['sequence'];
+
+        if( empty($columnCook) || (!empty($columnCook) && $columnCook != $request->column)) {
+            setcookie('column', $request->column);
+
+            $column = $request->column;
+        }else{
+            $column = $columnCook;
+        }
+
+        if( empty($sequenceCook) || (!empty($sequenceCook) && $sequenceCook != $request->sequence)) {
+            setcookie('sequence', $request->sequence);
+
+            $sequence = $request->sequence;
+        }else{
+            $sequence = $columnCook;
+        }
+
+        $workers = $this->objWorker->sortInfoWorkers($column,$sequence);
+
+        return view('ajax.list_worker_ajax',compact('workers'))->render();
+    }*/
 
 
     /**
