@@ -24,7 +24,7 @@ class Worker extends Model
         return $res;
     }
 
-     public function searchInfoWorkers($string = '',$select_column)
+    public function searchInfoWorkers($string = '',$select_column)
     {
         $res = Worker::select('id', 'photo', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
             ->where($select_column, 'like', '%'.$string.'%')->paginate(2);
@@ -32,7 +32,7 @@ class Worker extends Model
         return $res;
     }
 
-      public function sortInfoWorkers($select_column,$string = 'DESC')
+    public function sortInfoWorkers($select_column,$string = 'DESC')
     {
         $res = Worker::select('id', 'photo', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
             ->orderBy($select_column, $string)->paginate(500);
@@ -55,7 +55,8 @@ class Worker extends Model
 
         return $res;
     }
-      public function oldPhotoWay($id)
+
+    public function oldPhotoWay($id)
     {
         $res = Worker::select('photo')
             ->find($id);
@@ -99,7 +100,7 @@ class Worker extends Model
         return  $res;
     }
 
-     public function newBoss($id)
+    public function newBoss($id)
      {
 
         $res = Worker::select('parent_id')->find($id);

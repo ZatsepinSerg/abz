@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'WorkerController@index')->name('home');
+Route::get('/', 'WorkerController@index');
 
 Route::group([ 'middleware' => 'auth'], function(){
     Route::GET('/workers', 'WorkerController@workers_list');
@@ -29,4 +29,4 @@ Route::group([ 'middleware' => 'auth'], function(){
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'WorkerController@index')->name('home');
