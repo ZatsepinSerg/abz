@@ -131,9 +131,14 @@ class WorkerController extends Controller
      */
     public function create()
     {
-        return view('create');
+        return view('create',compact('workers'));
     }
 
+
+    public function short(Request $request){
+        $workers = $this->objWorker->shortWorkersInfo($request->q);
+        return $workers;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -144,7 +149,7 @@ class WorkerController extends Controller
     {
         $answer = FALSE;
         $time = time();
-
+      dd($request);
         $this->validate($request, [
             'name' => 'required|max:200',
             'surname' => 'required|max:200',
@@ -155,21 +160,22 @@ class WorkerController extends Controller
             'salary' => 'integer|required',
             'file' =>'mimes:jpeg,bmp,png'
         ]);
-if(!empty($request->file('file'))) {
-    $photoWay = "images/photo/" . $time . "-" . $request->file('file')->getClientOriginalName();
-    $request->file('file')->move(public_path() . '/images/photo/', $time . "-" . $request->file('file')->getClientOriginalName());
 
-    $this->objWorker->name = $request->name;
-    $this->objWorker->surname = $request->surname;
-    $this->objWorker->patronymic = $request->patronymic;
-    $this->objWorker->parent_id = $request->boss;
-    $this->objWorker->position = $request->position;
-    $this->objWorker->date_receipt = $request->date_receipt;
-    $this->objWorker->salary = $request->salary;
-    $this->objWorker->photo = $photoWay;
+        if(!empty($request->file('file'))) {
+            $photoWay = "images/photo/" . $time . "-" . $request->file('file')->getClientOriginalName();
+            $request->file('file')->move(public_path() . '/images/photo/', $time . "-" . $request->file('file')->getClientOriginalName());
 
-    $answer = $this->objWorker->save();
-}
+            $this->objWorker->name = $request->name;
+            $this->objWorker->surname = $request->surname;
+            $this->objWorker->patronymic = $request->patronymic;
+            $this->objWorker->parent_id = $request->boss;
+            $this->objWorker->position = $request->position;
+            $this->objWorker->date_receipt = $request->date_receipt;
+            $this->objWorker->salary = $request->salary;
+            $this->objWorker->photo = $photoWay;
+
+            $answer = $this->objWorker->save();
+        }
 
         if($answer){
             session()->flash('message','Сотрудник успешно добавлен!');

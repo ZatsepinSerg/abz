@@ -1,6 +1,8 @@
 @extends('layout_parts.layout')
 
 @section('content')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
     <form class="form-horizontal" method="post" name="worker_info" action="{{url('/worker')}}" enctype='multipart/form-data'>
         {{csrf_field()}}
@@ -32,13 +34,80 @@
                            placeholder="patronymic" name="patronymic" value="" required>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputPassword3" class="col-sm-1 control-label">boss</label>
-                <div class=" col-sm-12">
-                    <input type="text" class="form-control"
-                           placeholder="boss" name="boss" value="" required>
+
+        <div class="hide">
+            <div class="container">
+                <div class="col-sm-6" style="height:130px;">
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker10'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar">
+                    </span>
+                </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker10').datetimepicker({
+                            viewMode: 'years',
+                            format: 'MM/YYYY'
+                        });
+                    });
+                </script>
+            </div></div>
+
+
+                <label  class="col-sm-3 control-label">select boss</label>
+
+                    <select class=" col-sm-12 form-control js-example-basic-single" name="boss">
+                    </select>
+
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('.js-example-basic-single').select2({
+                        ajax :{
+                            url : '/ajax/short',
+                            dataType : 'json',
+                            delay : 200 ,
+                            data : function (params) {
+                                return {
+                                    q : params.term,
+                                    page :params.page
+                                };
+                            },
+                            processResults : function (data , params) {
+                              params.page = params.page || 1;
+                              return {
+                                  results : data.data,
+                                  pagination : {
+                                      more : (params.page *10) < data.total
+                                  }
+                              };
+                            }
+                        },
+                        minimumInputLength : 1,
+                        templateResult : function (repo) {
+                            if(repo.loading){
+                                return repo.name;
+                            }
+
+                            var markup = repo.name;
+
+                            return markup;
+                        },
+                        templateSelection : function(repo){
+                            return repo.name;
+                        },
+                        escapeMarkup : function (markup) {
+                            return markup;
+                        }
+                    });
+                });
+            </script>
+
+
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-2 control-label">position</label>
                 <div class=" col-sm-12">
@@ -52,8 +121,6 @@
                     <input type="text" class="form-control"
                            placeholder="date_receipt" name="date_receipt" value="" required>
                 </div>
-
-
             </div>
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-2 control-label">salary</label>

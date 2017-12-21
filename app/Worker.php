@@ -16,6 +16,13 @@ class Worker extends Model
         return $res;
     }
 
+    public function shortWorkersInfo($name){
+        $res = Worker::select('id','name')
+            ->where('name', 'like', '%'.$name.'%')->paginate(20);
+
+        return $res;
+    }
+
     public function allInfoWorkers()
     {
         $res = Worker::select('id', 'photo', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
@@ -27,7 +34,7 @@ class Worker extends Model
     public function searchInfoWorkers($string = '',$select_column)
     {
         $res = Worker::select('id', 'photo', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
-            ->where($select_column, 'like', '%'.$string.'%')->paginate(2);
+            ->where($select_column, 'like', '%'.$string.'%')->paginate(100);
 
         return $res;
     }
