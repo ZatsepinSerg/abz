@@ -60,136 +60,14 @@
             @endforeach
             </tbody>
         </table>
+        <div id="type_pagination" title="main">
         <div class="col-lg-6 col-md-3 col-sm-4 col-xs-6 col-lg-offset-4">
             @if(count($workers))
                 {{$workers->links()}}
             @endif
         </div>
+        </div>
     </div>
 
-    <script type="text/javascript">
-        function search_info(search, page) {
 
-            var searchStr = search.searchString.value;
-            var selectStr = search.select.value;
-
-            if (searchStr.replace(/\s/g, '') == '') {
-                $('.search').addClass('has-error');
-
-                return false
-            }
-
-            $('.search').removeClass('has-error')
-
-
-            $.ajax({
-                type: 'get',
-                url: '/ajax/search_info?page=' + page,
-                data: {
-                    string: searchStr, select: selectStr
-                },
-                success: function (response) {
-                     console.log(page)
-                    $('.content').html(response)
-                    location.hash = page;
-                },
-                error: function () {
-                    alert('error');
-                }
-            });
-            return false;
-        }
-
-        function sort_info(id, page) {
-
-            if (id){
-                var sequence = $('#' + id).val()
-
-                if (sequence != "ASC") {
-                    sequence = "ASC"
-                } else {
-                    sequence = "DESC"
-                }
-            }
-
-            if(page =='undefined'){
-                page = 1
-            }
-
-            $.ajax({
-                type: 'get',
-                url: '/sort_info?page=' + page,
-                data: {
-                    column: id, sequence: sequence
-                },
-                success: function (response) {
-                    $('.content').html(response)
-
-                    if (sequence == "ASC") {
-                        $('#' + id).val("ASC")
-                        $('#' + id).append('<span class=" glyphicon glyphicon-menu-up sort" aria-hidden="true"></span>');
-                    } else {
-                        $('#' + id).val("DESC")
-                        $('#' + id).append('<span class=" glyphicon glyphicon-menu-down sort" aria-hidden="true"></span>');
-                    }
-
-                    location.hash = page;
-                },
-                error: function () {
-                    alert('error');
-                }
-            });
-            return false;
-        }
-
-        /*  function refresh_table(response) {
-              $('#list').empty();
-              var table='';
-              console.log(response);
-              if (response.length > 0) {
-                  for (info in response) {
-
-                      table += '<tr id="'+ response[info].id +'"> <td ><img src="' + response[info].photo + '" alt="' + response[info].name + '" ' +
-                          'style="width: 100px;height: 100px;" class="img-rounded" ></td>' +
-                          ' <td >' + response[info].patronymic + '</td><td >' + response[info].surname + '</td>' +
-                          '<td >' + response[info].name + '</td><td>' + response[info].position + '</td> <td >'
-                          + response[info].salary + '$</td> <td >' + response[info].date_receipt + '</td></tr>'
-                  }
-              }else{
-                  table += '<tr><td></td><td></td><td><h1>No Result</h1></td><td><td></td><td></td></td><td></td></tr>';
-              }
-              $('#list').html( table );
-          }
-  */
-// TODO::чёт не то ,не работает при сортировке  и поиске
-        $('#list').on("click", 'tr', function () {
-            alert(this.id)
-            var id = this.id;
-
-            location.href = "/worker/" + id + "/edit";
-        })
-
-        $(document).on('click', '.pagination a', function (e) {
-            e.preventDefault();
-            var id = '';
-            var page = $(this).attr('href').split('page=')[1];
-
-            sort_info(id,page)
-            //как-то получить старый id
-            // search_info(search,page)
-            //getWorkes(page)
-        });
-
-        function getWorkes(page) {
-            $.ajax({
-                url: '/ajax/workers?page=' + page
-            }).done(function (data) {
-
-                $('.content').html(data)
-
-                location.hash = page;
-            })
-        }
-
-    </script>
 @endsection

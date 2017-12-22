@@ -18,17 +18,22 @@ mix.styles([
     'node_modules/jquery-treegrid/styles.css',
     'node_modules/jquery-treegrid/css/jquery.treegrid.css',
     'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-    'public/css/my_style.css'
+    'public/css/my_style.css',
+    'node_modules/select2/dist/css/select2.min.css'
 ], 'public/css/all.css');
 
 
-mix.js([
+mix.scripts([
     'node_modules/jquery/dist/jquery.js',
     'node_modules/jquery-treegrid/js/jquery.treegrid.js',
     'node_modules/jquery-treegrid/js/jquery.cookie.js',
     'node_modules/jquery-treegrid/js/jquery.treegrid.bootstrap2.js',
     'node_modules/jquery-treegrid/js/jquery.treegrid.bootstrap3.js',
-    'resources/assets/js/search.js',
     'bower_components/moment/moment.js',
-    'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'
+    'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+    'node_modules/select2/dist/js/select2.min.js',
+    'resources/assets/js/select2boss.js',
+    'resources/assets/js/imageLoader.js',
+    'resources/assets/js/search.js'
+
 ], 'public/js/all.js');

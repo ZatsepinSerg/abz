@@ -35,10 +35,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputPassword3" class="col-sm-1 control-label">boss</label>
+                <label for="inputPassword3" class="col-sm-1 control-label">boss:{{$boss_info->surname}}</label>
                 <div class=" col-sm-12">
-                    <input type="text" class="form-control" id="inputPassword3"
-                           placeholder="{{$boss_info->surname}}" name="boss" value="{{$boss_info->id}}">
+                    <select class=" col-sm-12 form-control js-example-basic-single" name="boss" >
+
+                    </select>
                 </div>
             </div>
 
@@ -49,13 +50,21 @@
                            placeholder="{{$worker_info->position}}" name="position" value="{{$worker_info->position}}">
                 </div>
             </div>
+
             <div class="form-group">
-                <label for="inputPassword3" class="col-sm-3 control-label">date receipt</label>
-                <div class=" col-sm-12">
-                    <input type="text" class="form-control" id="inputPassword3"
-                           placeholder="{{$worker_info->date_receipt}}" name="date_receipt" value="{{$worker_info->date_receipt}}">
+                <label for="date_receipt" class="col-sm-3 control-label">date receipt</label>
+            <div class="col-sm-12" >
+                <div class='input-group date' id='datetimepicker10'>
+                    <input type='text' name="date_receipt" class="form-control" placeholder="{{$worker_info->date_receipt}}" value="{{$worker_info->date_receipt}}" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar">
+                    </span>
+                </span>
+
                 </div>
             </div>
+            </div>
+
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-2 control-label">salary</label>
                 <div class=" col-sm-12">
@@ -84,21 +93,4 @@
             </div>
         </div>
     </div>
-
-    <script type="text/javascript">
-        $('#files').change(function() {
-            var input = $(this)[0];
-            if ( input.files && input.files[0] ) {
-                if ( input.files[0].type.match('image.*') ) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) { $('#image_preview').attr('src', e.target.result); }
-                    reader.readAsDataURL(input.files[0]);
-                }// else console.log('is not image mime type');
-            }// else console.log('not isset files data or files API not supordet');
-        });
-
-        $('#image_preview').click(function(){
-            $('#files').click();
-        });
-    </script>
 @endsection

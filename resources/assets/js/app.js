@@ -20,3 +20,13 @@ Vue.component('example', require('./components/Example.vue'));
 const app = new Vue({
     el: '#app'
 });
+
+function initdateTimePicker() {
+    $('#datetimepicker10').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+}
+
+$(document).ready(function(){
+    initdateTimePicker();
+});

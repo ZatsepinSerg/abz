@@ -18,7 +18,7 @@ class Worker extends Model
 
     public function shortWorkersInfo($name){
         $res = Worker::select('id','name')
-            ->where('name', 'like', '%'.$name.'%')->paginate(20);
+            ->where('name', 'like', '%'.$name.'%')->paginate(100);
 
         return $res;
     }
@@ -26,7 +26,7 @@ class Worker extends Model
     public function allInfoWorkers()
     {
         $res = Worker::select('id', 'photo', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
-            ->orderBy('salary', 'DESC')->paginate(10);
+            ->orderBy('salary', 'DESC')->paginate(100);
 
         return $res;
     }
@@ -42,7 +42,7 @@ class Worker extends Model
     public function sortInfoWorkers($select_column,$string = 'DESC')
     {
         $res = Worker::select('id', 'photo', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
-            ->orderBy($select_column, $string)->paginate(500);
+            ->orderBy($select_column, $string)->paginate(100);
 
         return $res;
     }

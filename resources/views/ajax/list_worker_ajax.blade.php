@@ -37,16 +37,17 @@
             @endif
             </tbody>
         </table>
+
+        <div id="type_pagination" title="">
         <div class="col-lg-6 col-md-3 col-sm-6 col-xs-12 col-lg-offset-4">
             @if(count($workers))
                 {{$workers->links()}}
             @endif
         </div>
-
+        </div>
         <script>
 
             $('#list').on("click", 'tr', function () {
-                alert(this.id)
                 var id = this.id;
 
                 location.href = "/worker/" + id + "/edit";
