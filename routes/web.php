@@ -25,7 +25,7 @@ Route::group([ 'middleware' => 'auth'], function(){
     Route::GET('/ajax/workers', 'WorkerController@workers_list_ajax');
     Route::GET('/ajax/search_info', 'WorkerController@searchAjaxInfoWorkers');
     Route::GET('/ajax/short', 'WorkerController@short');
-
+    Route::GET('/ajax/subordinate', 'WorkerController@subordinate');
 });
 
 Auth::routes();

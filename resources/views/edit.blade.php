@@ -35,10 +35,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputPassword3" class="col-sm-1 control-label">boss:{{$boss_info->surname}}</label>
+                <label for="inputPassword3" class="col-sm-3 control-label">@if(!empty($boss_info))boss:{{$boss_info->surname}}@else Don`t boss @endif </label>
                 <div class=" col-sm-12">
                     <select class=" col-sm-12 form-control js-example-basic-single" name="boss" >
-
                     </select>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="col-lg-12">
-        <div class="col-lg-3"></div>
+        <div class="col-lg-3">Для сортировки нажмите на название поля по которому необходимо сортировать </div>
         <div class="col-lg-6">
             <form class="form-inline" id="search">
                 {{csrf_field()}}
@@ -61,11 +61,11 @@
             </tbody>
         </table>
         <div id="type_pagination" title="main">
-        <div class="col-lg-6 col-md-3 col-sm-4 col-xs-6 col-lg-offset-4">
-            @if(count($workers))
-                {{$workers->links()}}
-            @endif
-        </div>
+            <div class="col-lg-6 col-md-3 col-sm-4 col-xs-6 col-lg-offset-4">
+                @if(count($workers))
+                    {{$workers->links()}}
+                @endif
+            </div>
         </div>
     </div>
 

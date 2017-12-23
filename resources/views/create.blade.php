@@ -6,7 +6,7 @@
         {{csrf_field()}}
         <div class="col-sm-6">
             <div class="form-group">
-                <img alt="" id="image_preview" class="img-thumbnail thumb "  src=""/>
+                <img alt="" id="image_preview" class="img-thumbnail thumb "  src="/img/no-available-image.png"/>
                 <input class="hide" type="file" id="files" name="file" multiple />
                 <p class="help-block">Click on the image to select a new photo</p>
             </div>

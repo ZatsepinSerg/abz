@@ -8,10 +8,18 @@ class Worker extends Model
 {
     protected $fillable = [];
 
-    public function allWorkers()
+    public function bossInfoWorkers($parent_id ='0')
+    {
+        $res = Worker::select('id', 'parent_id', 'surname', 'name', 'patronymic', 'position', 'date_receipt',
+            'salary')->where('parent_id','=',$parent_id)->first();
+
+        return $res;
+    }
+
+    public function subordinateWorkers($bossId)
     {
         $res = Worker::select('id', 'parent_id', 'surname', 'name', 'patronymic', 'position', 'date_receipt', 'salary')
-            ->orderBy('parent_id', 'ASC')->get();
+            ->where('parent_id','=',$bossId)->get();
 
         return $res;
     }
@@ -86,6 +94,7 @@ class Worker extends Model
                 'photo' => $photoWay,
             ]);
         }else{
+
             $result = Worker::where('id', '=', $id)->update([
                 'name' => $request->name,
                 'patronymic'=> $request->patronymic,

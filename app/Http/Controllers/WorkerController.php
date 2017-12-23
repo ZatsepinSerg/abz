@@ -22,12 +22,29 @@ class WorkerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+       public function index()
     {
-        $workers = $this->objWorker->allWorkers();
+        $workers ='';
 
-        return view('greed_workers',compact('workers'));
+        $bossInfo = $this->objWorker->bossInfoWorkers();
+
+        if(!empty($bossInfo->id)){
+            $workers = $this->objWorker->subordinateWorkers($bossInfo->id);
+        }
+
+        return view('greed_workers',compact('workers','bossInfo'));
     }
+
+    public function subordinate(Request $request)
+    {
+
+        if (!empty($request->boss)) {
+            $workers = $this->objWorker->subordinateWorkers($request->boss);
+        }
+
+        return view('ajax.add_branch',compact('workers'))->render();
+    }
+
 
     public function workers_list()
     {
@@ -88,40 +105,10 @@ class WorkerController extends Controller
             $sequence = $sequenceCook;
         }
 
-
-
         $workers = $this->objWorker->sortInfoWorkers( $column,$sequence);
 
         return view('ajax.list_worker_ajax',compact('workers'))->render();
     }
-
-    /*public function sortAjaxInfoWorkers(Request $request)
-    {
-        //$this->validate($request, ['column' => 'required', 'sequence' => 'required']);
-
-        $column = $_COOKIE['column'];
-        $sequence = $_COOKIE['sequence'];
-
-        if( empty($columnCook) || (!empty($columnCook) && $columnCook != $request->column)) {
-            setcookie('column', $request->column);
-
-            $column = $request->column;
-        }else{
-            $column = $columnCook;
-        }
-
-        if( empty($sequenceCook) || (!empty($sequenceCook) && $sequenceCook != $request->sequence)) {
-            setcookie('sequence', $request->sequence);
-
-            $sequence = $request->sequence;
-        }else{
-            $sequence = $columnCook;
-        }
-
-        $workers = $this->objWorker->sortInfoWorkers($column,$sequence);
-
-        return view('ajax.list_worker_ajax',compact('workers'))->render();
-    }*/
 
 
     /**
@@ -227,6 +214,7 @@ class WorkerController extends Controller
     public function update(Request $request, $id)
     {
         $time = time();
+        $photoWay = '';
 
         $this->validate($request, [
             'id' => 'required|integer',
@@ -250,7 +238,7 @@ class WorkerController extends Controller
               $answer = $this->objWorker->updateWorker($id,$request,$photoWay);
 
           }else {
-              $answer = $this->objWorker->updateWorker($id,$request);
+              $answer = $this->objWorker->updateWorker($id,$request,$photoWay);
           }
 
               if ($answer) {

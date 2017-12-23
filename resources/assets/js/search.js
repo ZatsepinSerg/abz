@@ -55,7 +55,7 @@ function search_info(search, page) {
 
 function sort_info(id, page) {
 
-    if (id){
+    if(id){
         var sequence = $('#' + id).val()
 
         if (sequence != "ASC") {
@@ -87,8 +87,6 @@ function sort_info(id, page) {
                 $('#' + id).val("DESC")
                 $('#' + id).append('<span class=" glyphicon glyphicon-menu-down sort" aria-hidden="true"></span>');
             }
-
-
         },
         error: function () {
             alert('error');
